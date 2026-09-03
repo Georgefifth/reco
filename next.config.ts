@@ -6,4 +6,5 @@ const nextConfig: NextConfig = {
   // only serves static HTML/JS/CSS; it never receives or stores user data.
   // This reinforces our privacy story: there is no backend database.
   images: { unoptimized: true },
+  allowedDevOrigins: ["127.0.0.1", "localhost"],
 };
