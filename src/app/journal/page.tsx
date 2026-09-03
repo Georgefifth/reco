@@ -12,13 +12,14 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { AppShell, useProfile } from "@/components/AppShell";
-import { getAllCheckIns, getAllJournal, saveJournal, deleteJournal } from "@/lib/db";
+import { getAllCheckIns, getAllJournal, saveJournal, deleteJournal, saveSafetyLog } from "@/lib/db";
 import {
   isOllamaRunning,
   listOllamaModels,
   journalConversation,
 } from "@/lib/ollama";
 import type { JournalEntry, SymptomCheckIn } from "@/lib/types";
+import { createSafetyLog, inspectAIResponse, inspectUserText } from "@/lib/safety";
 import { uid, relativeTime, formatDate } from "@/lib/utils";
 
 export default function JournalPage() {
@@ -38,7 +39,7 @@ export default function JournalPage() {
     isOllamaRunning().then(setOllamaUp);
     listOllamaModels().then((m) => {
       setModels(m);
-      if (m.length && !model) setModel(m[0]);
+      if (m.length) setModel((current) => current || m[0]);
     });
   }, []);
 
@@ -63,6 +64,7 @@ export default function JournalPage() {
     const userText = text.trim();
     setText("");
 
+    const safety = inspectUserText(userText);
     const context = recentCheckins.length
       ? recentCheckins
           .map(
@@ -72,22 +74,26 @@ export default function JournalPage() {
           .join("\n")
       : "";
 
-    let aiResponse = "";
+    let aiResponse = safety.response ?? "";
+    let responseFiltered = false;
     try {
-      if (ollamaUp && model) {
-        aiResponse = await journalConversation(userText, context, model, (chunk) => {
-          setStreaming((s) => s + chunk);
-        });
-      } else {
+      if (!safety.blocked && ollamaUp && model) {
+        setStreaming("ReCo is checking your note locally before showing a response…");
+        const rawResponse = await journalConversation(safety.sanitizedText, context, model);
+        const inspected = inspectAIResponse(rawResponse);
+        aiResponse = inspected.response;
+        responseFiltered = inspected.filtered;
+      } else if (!safety.blocked) {
         aiResponse =
           "I'm not connected to a local AI right now. To enable AI journaling, install Ollama (ollama.com) and run a model like `ollama run qwen2.5:7b`. Your entry is still saved privately on your device.";
       }
     } catch (e) {
       setError(e instanceof Error ? e.message : "AI conversation failed");
-      aiResponse = "Sorry — I couldn't reach the local AI. Your entry is still saved.";
+      aiResponse = "I couldn't reach the local AI. Your entry is still saved on this device.";
     } finally {
       setStreaming("");
     }
+    await saveSafetyLog(createSafetyLog(safety, responseFiltered));
 
     const entry: JournalEntry = {
       id: uid(),
@@ -171,7 +177,7 @@ export default function JournalPage() {
         <div ref={scrollRef} className="flex-1 space-y-4 overflow-y-auto pr-1">
           {entries.length === 0 && !streaming && (
             <div className="rounded-xl border border-dashed border-[var(--color-line)] p-6 text-center text-sm text-[var(--color-muted)]">
-              Write about your day — how you're feeling, what's hard, what helped. ReCo will respond
+              Write about your day — how you’re feeling, what’s hard, what helped. ReCo will respond
               with empathy and gentle guidance. Everything stays on your device.
             </div>
           )}

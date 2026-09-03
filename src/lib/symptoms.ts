@@ -43,15 +43,71 @@ export interface RTPStage {
   minDays: number;
 }
 
+export interface RTLStage {
+  stage: number;
+  name: string;
+  setting: string;
+  description: string;
+  readyWhen: string;
+}
+
+export const RTL_STAGES: RTLStage[] = [
+  {
+    stage: 0,
+    name: "Relative rest",
+    setting: "Home",
+    description: "Daily activities that do not noticeably worsen symptoms. Begin with short reading or screen intervals and regular quiet breaks.",
+    readyWhen: "You tolerate routine home activity and 5–15 minutes of light cognitive work.",
+  },
+  {
+    stage: 1,
+    name: "Learning at home",
+    setting: "Home",
+    description: "Short homework, reading, or screen sessions with breaks. Increase cognitive load gradually rather than waiting for every symptom to disappear.",
+    readyWhen: "You sustain about 30 minutes of schoolwork with only mild, brief symptom change.",
+  },
+  {
+    stage: 2,
+    name: "Supported return",
+    setting: "School",
+    description: "Return for partial days or selected classes with symptom-matched accommodations and a quiet recovery space.",
+    readyWhen: "You complete a partial day without a significant or lasting symptom flare.",
+  },
+  {
+    stage: 3,
+    name: "Full school day",
+    setting: "School",
+    description: "Resume full days while tapering accommodations. Delay high-stakes testing until regular learning is tolerated.",
+    readyWhen: "You tolerate a full academic day and complete usual work with manageable symptoms.",
+  },
+];
+
+export const ACCOMMODATIONS: Partial<Record<SymptomKey, string[]>> = {
+  headache: ["Offer a quiet rest area", "Allow brief breaks before symptoms spike", "Reduce non-essential screen exposure"],
+  photosensitivity: ["Lower screen brightness", "Permit sunglasses or a brimmed hat", "Seat away from windows and projectors"],
+  noiseSensitivity: ["Provide a quiet testing space", "Permit ear protection between lessons", "Avoid assemblies temporarily"],
+  foggy: ["Break assignments into smaller steps", "Provide written instructions", "Reduce simultaneous deadlines"],
+  difficultyConcentrating: ["Use 20-minute work blocks", "Allow extended test time", "Reduce distraction in the work area"],
+  difficultyRemembering: ["Provide notes or recorded instructions", "Allow memory aids", "Check understanding privately"],
+  fatigue: ["Schedule demanding classes earlier", "Permit a shortened day", "Avoid back-to-back assessments"],
+  dizziness: ["Allow extra passing time", "Limit stairs when possible", "Provide seated alternatives"],
+};
+
+export function suggestedAccommodations(symptoms: Partial<Record<SymptomKey, number>>) {
+  return Array.from(new Set(Object.entries(symptoms)
+    .filter(([, severity]) => (severity ?? 0) >= 2)
+    .flatMap(([key]) => ACCOMMODATIONS[key as SymptomKey] ?? [])));
+}
+
 export const RTP_STAGES: RTPStage[] = [
   {
     stage: 0,
-    name: "Rest & Recovery",
+    name: "Relative Rest & Recovery",
     description:
-      "Complete physical and cognitive rest. Limit screen time, reading, and bright environments.",
+      "Use relative rest for the first 24–48 hours, then resume light physical and cognitive activity as tolerated.",
     activities:
-      "Sleep, gentle walks around the house, limited cognitive load. No school/work if possible (1–2 days).",
-    goal: "Recovery to baseline symptoms at rest",
+      "Sleep, gentle walks, and short periods of reading or screen use that cause no more than a mild, brief symptom increase.",
+    goal: "Tolerate daily activity without a significant or lasting symptom flare",
     minDays: 1,
   },
   {

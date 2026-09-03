@@ -16,21 +16,27 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
-import { exportAllData, wipeAllData, getAllCheckIns, getAllJournal } from "@/lib/db";
+import { exportAllData, wipeAllData, getAllCheckIns, getAllJournal, getAllAssessments, getAllSafetyLogs, getProfile } from "@/lib/db";
 import { isOllamaRunning } from "@/lib/ollama";
 
 export default function PrivacyPage() {
   const [checkinCount, setCheckinCount] = useState(0);
   const [journalCount, setJournalCount] = useState(0);
+  const [assessmentCount, setAssessmentCount] = useState(0);
+  const [safetyLogCount, setSafetyLogCount] = useState(0);
+  const [isDemo, setIsDemo] = useState(false);
   const [ollamaUp, setOllamaUp] = useState<boolean | null>(null);
   const [confirmWipe, setConfirmWipe] = useState(false);
   const [wiped, setWiped] = useState(false);
 
   useEffect(() => {
-    Promise.all([getAllCheckIns(), getAllJournal(), isOllamaRunning()]).then(
-      ([c, j, up]) => {
+    Promise.all([getAllCheckIns(), getAllJournal(), getAllAssessments(), getAllSafetyLogs(), getProfile(), isOllamaRunning()]).then(
+      ([c, j, a, s, profile, up]) => {
         setCheckinCount(c.length);
         setJournalCount(j.length);
+        setAssessmentCount(a.length);
+        setSafetyLogCount(s.length);
+        setIsDemo(profile?.isDemo ?? false);
         setOllamaUp(up);
       },
     );
@@ -53,6 +59,9 @@ export default function PrivacyPage() {
     setConfirmWipe(false);
     setCheckinCount(0);
     setJournalCount(0);
+    setAssessmentCount(0);
+    setSafetyLogCount(0);
+    setIsDemo(false);
   }
 
   return (
@@ -69,9 +78,11 @@ export default function PrivacyPage() {
             <Shield size={22} className="text-[var(--color-brand)]" /> Privacy center
           </h1>
           <p className="mt-1 text-sm text-[var(--color-muted)]">
-            ReCo was built privacy-first. Here's exactly what happens to your data.
+            ReCo was built privacy-first. Here’s exactly what happens to your data.
           </p>
         </div>
+
+        {isDemo && <section className="rounded-xl border border-[var(--color-accent)]/30 bg-[var(--color-surface)] p-4"><p className="font-semibold">Sample recovery data is active</p><p className="mt-1 text-sm text-[var(--color-muted)]">Use “Delete all data” below when you finish exploring. The demo never leaves this browser.</p></section>}
 
         {/* Privacy principles */}
         <section className="rounded-2xl border border-[var(--color-brand)]/30 bg-[var(--color-brand-soft)] p-5">
@@ -105,11 +116,13 @@ export default function PrivacyPage() {
         {/* Data inventory */}
         <section className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
           <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--color-muted)]">
-            What's stored on this device
+            What’s stored on this device
           </h2>
-          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          <div className="mt-3 grid grid-cols-2 gap-3">
             <DataStat label="Symptom check-ins" value={checkinCount} />
             <DataStat label="Journal entries" value={journalCount} />
+            <DataStat label="Cognitive observations" value={assessmentCount} />
+            <DataStat label="Anonymous safety checks" value={safetyLogCount} />
           </div>
           <div className="mt-3 flex items-center gap-2 rounded-lg bg-[var(--color-brand-soft)] p-3 text-sm">
             <Cpu size={16} className="text-[var(--color-brand)]" />
@@ -124,8 +137,22 @@ export default function PrivacyPage() {
           </div>
         </section>
 
+        <section className="rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-5">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-[var(--color-muted)]">Local AI safety path</h2>
+          <ol className="mt-4 grid gap-2 sm:grid-cols-4">
+            {["1 · Emergency screen", "2 · Personal data removal", "3 · Local model", "4 · Response safety check"].map((step) => (
+              <li key={step} className="rounded-lg bg-[var(--color-brand-soft)] p-3 text-sm font-medium text-[var(--color-brand-dark)]">{step}</li>
+            ))}
+          </ol>
+          <p className="mt-3 text-xs text-[var(--color-muted)]">Safety logs store only the outcome and categories—not your journal text. Emergency content is stopped before model inference.</p>
+        </section>
+
         {/* Actions */}
         <section className="grid gap-3 sm:grid-cols-2">
+          <Link href="/report" className="flex items-center gap-3 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 transition-colors hover:border-[var(--color-brand)]/40">
+            <span className="grid h-10 w-10 place-items-center rounded-lg bg-[var(--color-brand-soft)] text-[var(--color-brand-dark)]"><FileText size={18} /></span>
+            <span><span className="block font-semibold">Recovery report</span><span className="block text-sm text-[var(--color-muted)]">Print a clinician-friendly summary</span></span>
+          </Link>
           <button
             onClick={handleExport}
             className="flex items-center gap-3 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] p-4 text-left transition-all hover:border-[var(--color-brand)]/40 hover:shadow-sm"
@@ -197,7 +224,7 @@ export default function PrivacyPage() {
           <div className="mt-3 space-y-3 text-sm text-[var(--color-ink)]">
             <p>
               <strong>What we collect:</strong> Nothing. ReCo has no server. The only data is what
-              you enter, stored locally in your browser's IndexedDB.
+              you enter, stored locally in your browser’s IndexedDB.
             </p>
             <p>
               <strong>What we send anywhere:</strong> Nothing, with one exception — when you journal
@@ -214,7 +241,7 @@ export default function PrivacyPage() {
               close because there is no account.
             </p>
             <p>
-              <strong>Responsible AI note:</strong> ReCo's AI is a supportive companion, not a
+              <strong>Responsible AI note:</strong> ReCo’s AI is a supportive companion, not a
               diagnostic tool. It will not diagnose, prescribe, or replace a clinician. It is
               instructed to direct users to emergency services (911) when red-flag symptoms appear.
               All AI inference runs on hardware you control.

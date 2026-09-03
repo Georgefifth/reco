@@ -19,7 +19,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Nav />
-      <main className="mx-auto w-full max-w-3xl flex-1 px-4 py-6 sm:py-8">{children}</main>
+      <main id="main-content" className="mx-auto w-full max-w-3xl flex-1 px-4 py-6 sm:py-8">{children}</main>
       <footer className="border-t border-[var(--color-line)] px-4 py-6 text-center text-xs text-[var(--color-muted)]">
         <p>
           ReCo is a recovery companion, not a medical device. It does not diagnose or replace

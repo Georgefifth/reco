@@ -19,6 +19,10 @@
 
 目标赛道：脑震荡恢复、Responsible AI（$8,676 大奖）、AI/ML、心理健康、设计、创新、Render
 
+第二轮状态（2026-09-03）：Daily Check-in 已重构为 4 组渐进流程；已加入恢复背景、模式洞察和可打印恢复报告。鉴于正式 SCAT6 数字化重排需要授权，产品文案不再声称复刻官方 SCAT，仅描述为 22 个常见脑震荡症状领域的自我观察工具。
+
+第三轮状态（2026-09-03）：已重构首次访问页面，并加入一键本地 Sample Recovery。评委无需手动 onboarding 即可看到 9 天症状趋势、认知评估、恢复阶段、日记和模式洞察。已新增 `FLOW_VIDEO_PLAN.md`，采用 Google Flow 短片段 + 真实产品录屏的混合制作方案。
+
 ---
 
 ## 竞品调研发现
@@ -73,7 +77,9 @@
 
 ### P0 — 必须做（直接影响评审得分）
 
-#### 1. 添加认知评估测试（打脑震荡赛道的"技术复杂度"和"神经科学理解"）
+> 状态（2026-09-03）：P0 四项均已实现并通过 lint、生产构建和浏览器验证。
+
+#### 1. 添加认知评估测试 [DONE]（打脑震荡赛道的"技术复杂度"和"神经科学理解"）
 **为什么**：当前只有主观症状自评。竞品 NeuroGuard AI 和 ConcussionCare Plus 都有客观认知测试。这是区分"日记 app"和"恢复工具"的关键。
 
 **做什么**：在 `/assess` 新页面添加 3 个浏览器端认知测试：
@@ -91,7 +97,7 @@
 - `src/components/cognitive/DigitsBackwardTest.tsx`
 - `src/components/cognitive/OneBackTest.tsx`
 
-#### 2. 添加 Return-to-Learn 协议（打"临床有效性"和"创新"）
+#### 2. 添加 Return-to-Learn 协议（打"临床有效性"和"创新"）[DONE]
 **为什么**：当前只有 Return-to-Play（运动员场景）。但大量脑震荡患者是学生。RTL 是研究热点且比赛合作方有多个大学 Synapse 分会。
 
 **做什么**：在 protocol 页面添加 RTL 标签页（与 RTP 并列）：
@@ -112,7 +118,7 @@
 - `src/app/protocol/page.tsx` — 加 tab 切换 RTP/RTL
 - `src/components/AccommodationLetter.tsx` — 可打印的调整信
 
-#### 3. 强化 AI 安全管道（打 Responsible AI 的"数据安全与责任"）
+#### 3. 强化 AI 安全管道（打 Responsible AI 的"数据安全与责任"）[DONE]
 **为什么**：当前 AI 只有一个 system prompt。获奖项目（Gemma Health Edge 的 8 阶段管道、HealthGuard 的 100+ 正则紧急检测）都有多层安全。
 
 **做什么**：在 `src/lib/ollama.ts` 添加预推理安全层：
@@ -128,7 +134,7 @@
 - `src/lib/db.ts` — 加 safetylogs store
 - `src/app/privacy/page.tsx` — 展示安全管道流程图 + 审计日志
 
-#### 4. 添加研究引用与证据基础页面（打"研究基础"和"神经科学理解"）
+#### 4. 添加研究引用与证据基础页面（打"研究基础"和"神经科学理解"）[DONE]
 **为什么**：评审明确看是否引用具体研究。当前只在 README 提了 Berlin 共识，app 内没有。
 
 **做什么**：新建 `/evidence` 页面：

@@ -16,9 +16,12 @@ export interface UserProfile {
   injuryDescription?: string;
   currentStage: number; // RTP stage 0-6
   stageStartedAt: number;
+  currentRTLStage?: number;
+  rtlStageStartedAt?: number;
   // optional
   age?: number;
   sport?: string;
+  isDemo?: boolean;
 }
 
 // SCAT-5 style 22-item symptom checklist
@@ -55,6 +58,11 @@ export interface SymptomCheckIn {
   createdAt: number;
   symptoms: Partial<Record<SymptomKey, number>>; // 0-6 severity
   notes?: string;
+  sleepHours?: number;
+  screenHours?: number;
+  activityMinutes?: number;
+  hydrationCups?: number;
+  percentNormal?: number;
   symptomScore: number; // sum
   symptomCount: number; // count of >0
 }
@@ -80,4 +88,24 @@ export interface RedFlagEvent {
   createdAt: number;
   flags: string[];
   acknowledged: boolean;
+}
+
+export type AssessmentType = "reaction" | "digits" | "oneBack";
+
+export interface CognitiveAssessment {
+  id: string;
+  type: AssessmentType;
+  createdAt: number;
+  score: number;
+  accuracy: number;
+  reactionTime?: number;
+  details: Record<string, number>;
+}
+
+export interface SafetyLog {
+  id: string;
+  createdAt: number;
+  outcome: "passed" | "emergency_blocked" | "response_filtered";
+  categories: string[];
+  personalDataRedacted: boolean;
 }

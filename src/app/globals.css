@@ -95,3 +95,23 @@ input[type="range"].severity::-moz-range-thumb {
   cursor: pointer;
   border: 3px solid var(--color-surface);
 }
+
+@media print {
+  body > header,
+  body > footer,
+  main > div > :not(.print-letter) {
+    display: none !important;
+  }
+
+  .print-letter,
+  .print-report {
+    border: 0 !important;
+    padding: 0 !important;
+  }
+
+  .print-letter button,
+  .report-controls a,
+  .report-controls button {
+    display: none !important;
+  }
+}

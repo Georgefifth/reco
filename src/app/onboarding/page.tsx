@@ -76,7 +76,7 @@ export default function OnboardingPage() {
         {step === 0 && (
           <section className="space-y-4">
             <div>
-              <h1 className="text-xl font-bold">Let's get you set up</h1>
+              <h1 className="text-xl font-bold">Let’s get you set up</h1>
               <p className="mt-1 text-sm text-[var(--color-muted)]">
                 ReCo is a private companion for your concussion recovery. Everything stays on your
                 device — no account, no servers, no tracking.
@@ -177,7 +177,7 @@ export default function OnboardingPage() {
             <div>
               <h1 className="text-xl font-bold">Anything else?</h1>
               <p className="mt-1 text-sm text-[var(--color-muted)]">
-                Optional — describe what happened and how you're feeling. This stays on your device.
+                Optional — describe what happened and how you’re feeling. This stays on your device.
               </p>
             </div>
             <label className="block">
@@ -192,8 +192,8 @@ export default function OnboardingPage() {
             </label>
             <div className="rounded-lg bg-[var(--color-brand-soft)] p-3 text-sm text-[var(--color-brand-dark)]">
               <strong>What happens next:</strong> ReCo starts you at Stage 0 (Rest & Recovery) of
-              the Berlin-consensus return-to-play protocol. You'll log daily symptoms and advance
-              when you've been symptom-free at the current stage.
+              the international-consensus return-to-sport protocol. You’ll log daily symptoms and advance
+              when you’ve been symptom-free at the current stage.
             </div>
             <div className="flex gap-2">
               <button

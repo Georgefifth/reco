@@ -7,6 +7,8 @@ import type {
   JournalEntry,
   ProtocolStageLog,
   RedFlagEvent,
+  CognitiveAssessment,
+  SafetyLog,
 } from "./types";
 
 interface ReCoDB extends DBSchema {
@@ -15,6 +17,12 @@ interface ReCoDB extends DBSchema {
   journal: { key: string; value: JournalEntry };
   protocol: { key: string; value: ProtocolStageLog };
   redflags: { key: string; value: RedFlagEvent };
+  assessments: {
+    key: string;
+    value: CognitiveAssessment;
+    indexes: { type: string; createdAt: number };
+  };
+  safetylogs: { key: string; value: SafetyLog; indexes: { createdAt: number } };
 }
 
 let dbPromise: Promise<IDBPDatabase<ReCoDB>> | null = null;
@@ -24,7 +32,7 @@ function getDB() {
     throw new Error("IndexedDB only available in browser");
   }
   if (!dbPromise) {
-    dbPromise = openDB<ReCoDB>("reco-db", 1, {
+    dbPromise = openDB<ReCoDB>("reco-db", 2, {
       upgrade(db) {
         if (!db.objectStoreNames.contains("profile")) {
           db.createObjectStore("profile", { keyPath: "id" });
@@ -41,6 +49,15 @@ function getDB() {
         }
         if (!db.objectStoreNames.contains("redflags")) {
           db.createObjectStore("redflags", { keyPath: "id" });
+        }
+        if (!db.objectStoreNames.contains("assessments")) {
+          const s = db.createObjectStore("assessments", { keyPath: "id" });
+          s.createIndex("type", "type");
+          s.createIndex("createdAt", "createdAt");
+        }
+        if (!db.objectStoreNames.contains("safetylogs")) {
+          const s = db.createObjectStore("safetylogs", { keyPath: "id" });
+          s.createIndex("createdAt", "createdAt");
         }
       },
     });
@@ -128,6 +145,27 @@ export async function saveRedFlag(r: RedFlagEvent): Promise<void> {
   await db.put("redflags", r);
 }
 
+export async function getAllAssessments(): Promise<CognitiveAssessment[]> {
+  const db = await getDB();
+  return db.getAllFromIndex("assessments", "createdAt");
+}
+
+export async function saveAssessment(a: CognitiveAssessment): Promise<void> {
+  const db = await getDB();
+  await db.put("assessments", a);
+}
+
+export async function getAllSafetyLogs(): Promise<SafetyLog[]> {
+  const db = await getDB();
+  const all = await db.getAllFromIndex("safetylogs", "createdAt");
+  return all.sort((a, b) => b.createdAt - a.createdAt);
+}
+
+export async function saveSafetyLog(log: SafetyLog): Promise<void> {
+  const db = await getDB();
+  await db.put("safetylogs", log);
+}
+
 // Wipe everything
 export async function wipeAllData(): Promise<void> {
   const db = await getDB();
@@ -136,24 +174,30 @@ export async function wipeAllData(): Promise<void> {
   await db.clear("journal");
   await db.clear("protocol");
   await db.clear("redflags");
+  await db.clear("assessments");
+  await db.clear("safetylogs");
 }
 
 // Export everything as JSON
 export async function exportAllData() {
-  const [profile, checkins, journal, protocol, redflags] = await Promise.all([
+  const [profile, checkins, journal, protocol, redflags, assessments, safetylogs] = await Promise.all([
     getProfile(),
     getAllCheckIns(),
     getAllJournal(),
     getAllProtocolLogs(),
     getAllRedFlags(),
+    getAllAssessments(),
+    getAllSafetyLogs(),
   ]);
   return {
     exportedAt: new Date().toISOString(),
-    appVersion: "1.0.0",
+    appVersion: "1.1.0",
     profile: profile ?? null,
     checkins,
     journal,
     protocol,
     redflags,
+    assessments,
+    safetylogs,
   };
 }

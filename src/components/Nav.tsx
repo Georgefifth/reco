@@ -2,14 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Brain, Home, ClipboardList, BookHeart, ListChecks, Shield } from "lucide-react";
+import { Brain, Home, ClipboardList, BookHeart, ListChecks, Shield, BrainCircuit, Library } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV = [
   { href: "/", label: "Home", icon: Home },
   { href: "/checkin", label: "Check-in", icon: ClipboardList },
   { href: "/journal", label: "Journal", icon: BookHeart },
+  { href: "/assess", label: "Assess", icon: BrainCircuit },
   { href: "/protocol", label: "Protocol", icon: ListChecks },
+  { href: "/evidence", label: "Evidence", icon: Library },
   { href: "/privacy", label: "Privacy", icon: Shield },
 ];
 
@@ -17,7 +19,8 @@ export function Nav() {
   const pathname = usePathname();
   return (
     <header className="sticky top-0 z-40 border-b border-[var(--color-line)] bg-[var(--color-surface)]/85 backdrop-blur-md">
-      <div className="mx-auto flex max-w-3xl items-center gap-1 px-4 py-3">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:left-3 focus:top-3 focus:z-50 focus:bg-[var(--color-surface)] focus:px-3 focus:py-2">Skip to main content</a>
+      <div className="mx-auto flex max-w-5xl items-center gap-1 overflow-x-auto px-4 py-3">
         <Link href="/" className="mr-2 flex items-center gap-2 font-semibold">
           <span className="grid h-8 w-8 place-items-center rounded-lg bg-[var(--color-brand)] text-white">
             <Brain size={18} />

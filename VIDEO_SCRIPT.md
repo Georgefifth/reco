@@ -1,5 +1,7 @@
 # ReCo — 4-Minute Demo Video Script
 
+> For the recommended Google Flow + real screencast production plan and ready-to-use prompts, see `FLOW_VIDEO_PLAN.md`.
+
 **Total target: 3:45–4:00**
 
 ---
@@ -27,7 +29,7 @@ Concussion recovery is lonely, slow, and non-linear. Patients struggle to know w
 **[Screen: ReCo home page, empty state]**
 
 **Voiceover:**
-Meet ReCo. It's a concussion recovery companion that does three things: it tracks your symptoms daily using the SCAT-5 standard, it guides you through a Berlin-consensus return-to-play protocol, and it gives you a private AI journal companion — all while keeping every byte of your data on your own device.
+Meet ReCo. It's a concussion recovery companion that does three things: it helps you track 22 common concussion symptom domains, it guides you through a international-consensus return-to-play protocol, and it gives you a private AI journal companion — all while keeping every byte of your data on your own device.
 
 **[Screen: Click "Get started" → onboarding wizard, step 1]**
 
@@ -45,10 +47,10 @@ Onboarding takes thirty seconds. You tell ReCo when you were injured, how it hap
 **Voiceover:**
 Now you're on your dashboard. Day one of recovery, starting at Stage 0 — rest. The first thing you'll do each day is a symptom check-in.
 
-**[Screen: Click "Daily check-in" → scroll through the 22-item SCAT-5 list]**
+**[Screen: Click “Daily check-in” → move through the 4 grouped symptom sections]**
 
 **Voiceover:**
-This is the SCAT-5 symptom evaluation — the same 22-item checklist clinicians use. You rate each symptom from zero to six. Headache, dizziness, brain fog, light sensitivity, emotional lability — all of it.
+This check-in covers 22 common concussion symptom domains in 4 short groups. You rate each symptom from zero to six; it supports self-observation and does not replace a clinical assessment. Headache, dizziness, brain fog, light sensitivity, emotional lability — all of it.
 
 **[Screen: Drag a few sliders — set headache to 4, foggy to 3, fatigue to 2. Show the score updating in the sticky bar]**
 
@@ -64,7 +66,7 @@ As you rate, your total symptom score updates live. Everything saves to your bro
 **[Screen: Navigate to Protocol page]**
 
 **Voiceover:**
-The return-to-play protocol is grounded in the Berlin consensus statement and CDC HEADS UP guidance. Six stages, from complete rest to full return to competition.
+The return-to-play protocol is grounded in the Amsterdam 2022 international consensus statement and CDC HEADS UP guidance. Six stages, from relative rest to full return to competition.
 
 **[Screen: Show the current stage card — Stage 0: Rest & Recovery. Scroll through all 6 stages]**
 
