@@ -3,6 +3,8 @@
 > A privacy-first recovery companion for people healing from a concussion.
 > Built for **Hack for Humanity | Summer 2026**.
 
+**[Open the live demo](https://reco-concussion.onrender.com)** · **[View the source](https://github.com/Georgefifth/reco)**
+
 ReCo helps people recovering from a concussion track symptoms, follow an evidence-based return-to-play protocol, and process the emotional weight of recovery with a local AI companion — all while keeping every byte of health data on their own device.
 
 ## Why this matters
@@ -12,7 +14,7 @@ Concussion is a hidden epidemic. The [Concussion Alliance](https://www.concussio
 ReCo addresses three gaps:
 
 1. **Visibility** — daily structured 22-domain symptom tracking turns an invisible injury into a trend you can see.
-2. **Protocol adherence** — a international-consensus return-to-play tracker keeps recovery grounded in evidence, not guesswork.
+2. **Protocol adherence** — an international-consensus return-to-play tracker keeps recovery grounded in evidence, not guesswork.
 3. **Emotional support** — a local AI companion helps process the frustration, fear, and isolation of recovery, with CBT-style reframing and red-flag safety prompts.
 
 ## Privacy is the feature, not a footnote
