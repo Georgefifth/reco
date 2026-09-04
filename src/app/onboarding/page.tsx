@@ -2,9 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ArrowRight, Brain } from "lucide-react";
-import { AppShell } from "@/components/AppShell";
+import { ArrowRight, Brain, Play } from "lucide-react";
+import { AppShell, useProfile } from "@/components/AppShell";
 import { saveProfile, saveProtocolLog } from "@/lib/db";
+import { seedDemoData } from "@/lib/demo";
 import type { UserProfile, InjuryContext, ProtocolStageLog } from "@/lib/types";
 import { uid, todayISO } from "@/lib/utils";
 
@@ -18,6 +19,7 @@ const CONTEXTS: { value: InjuryContext; label: string }[] = [
 
 export default function OnboardingPage() {
   const router = useRouter();
+  const { setProfile } = useProfile();
   const [step, setStep] = useState(0);
   const [nickname, setNickname] = useState("");
   const [injuryDate, setInjuryDate] = useState(todayISO());
@@ -25,6 +27,14 @@ export default function OnboardingPage() {
   const [sport, setSport] = useState("");
   const [description, setDescription] = useState("");
   const [saving, setSaving] = useState(false);
+  const [demoLoading, setDemoLoading] = useState(false);
+
+  async function loadDemo() {
+    setDemoLoading(true);
+    const demoProfile = await seedDemoData();
+    setProfile(demoProfile);
+    router.push("/");
+  }
 
   async function finish() {
     setSaving(true);
@@ -98,6 +108,21 @@ export default function OnboardingPage() {
             >
               Continue <ArrowRight size={16} />
             </button>
+            <div className="pt-2">
+              <div className="rounded-lg border border-dashed border-[var(--color-accent)]/40 bg-[var(--color-surface)] p-3">
+                <p className="text-xs text-[var(--color-muted)]">
+                  Just looking around? Load a sample recovery to explore ReCo without entering anything.
+                </p>
+                <button
+                  type="button"
+                  onClick={loadDemo}
+                  disabled={demoLoading}
+                  className="mt-2 inline-flex items-center gap-2 rounded-lg border border-[var(--color-line)] bg-[var(--color-surface)] px-3 py-1.5 text-sm font-semibold transition-colors hover:border-[var(--color-accent)] disabled:opacity-50"
+                >
+                  <Play size={14} /> {demoLoading ? "Loading Maya…" : "Explore Maya's demo"}
+                </button>
+              </div>
+            </div>
           </section>
         )}
 
