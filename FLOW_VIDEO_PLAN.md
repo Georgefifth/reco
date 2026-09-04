@@ -47,7 +47,7 @@ Screen recording:
 
 Voiceover:
 
-> This is ReCo, live on Render. It connects daily symptoms, cognitive observations, return-to-learn, and return-to-play in one private companion. No account, no backend database, no tracking. A judge can explore a realistic nine-day recovery locally with one click — here's Maya, a college soccer player on day ten of her recovery.
+> This is ReCo, live on Render. One click loads Maya's nine-day sample recovery — no account, no setup.
 
 ### 0:28–1:02 — Daily Recovery Snapshot
 
@@ -62,7 +62,7 @@ Screen recording:
 
 Voiceover:
 
-> Every day starts with a two-minute check-in. Instead of presenting 22 symptoms in one overwhelming page — which is exhausting for someone with a brain injury — ReCo groups them into four short sections: head and senses, thinking, energy and sleep, mood and body. Each symptom uses one clear zero-to-six scale, not a slider and seven buttons. Before rating symptoms, you can optionally log sleep, screen time, light activity, hydration, and how close you feel to your usual self. This daily context helps you notice possible relationships — like screen time and headache — without claiming cause or diagnosis. If a whole section is clear, one tap on "None in this group" moves you forward. A progress bar shows where you are, and you can go back to edit any section before saving.
+> The daily check-in groups 22 symptoms into four short sections — head, thinking, energy, and mood — each with one simple zero-to-six scale. Optional context like sleep and screen time helps spot relationships. One tap clears a whole section. Everything saves locally.
 
 ### 1:02–1:28 — Local Pattern Insight
 
@@ -75,7 +75,7 @@ Screen recording:
 
 Voiceover:
 
-> Back on the dashboard, Maya can see her symptom direction at a glance — the total score has dropped from 33 to 6 over nine days. Below that, ReCo highlights patterns worth noticing. These are transparent local calculations that look for relationships among symptoms, sleep, screen time, and light activity. For example, it might flag that headaches tend to follow high screen-time days. ReCo labels every pattern as a discussion point — not a medical conclusion. It's the kind of observation you might bring to a clinician appointment, not a substitute for one. The banner also reminds Maya that worsening symptoms, repeated vomiting, or slurred speech mean calling 911 immediately.
+> The dashboard shows symptom direction at a glance. ReCo flags local patterns — like screen time and headache — as discussion points, not medical conclusions.
 
 ### 1:28–1:58 — Cognitive Pulse
 
@@ -88,7 +88,7 @@ Screen recording:
 
 Voiceover:
 
-> The Cognitive Pulse page offers three short browser-based tasks. Reaction time measures how quickly you respond to a color change across five trials, using sub-millisecond timing. Digits backward shows a sequence and asks you to enter it in reverse. One-Back tests working memory by asking whether the current letter matches the previous one. None of these are diagnostic tests — they're wellness observations that help you notice personal changes over time. Maya's sample history shows her reaction time improving from 372 to 296 milliseconds, and her 1-Back accuracy rising from 70 to 85 percent. That's the kind of personal trend that can anchor a conversation with a clinician — but ReCo never claims to provide medical clearance.
+> Three short browser tasks track reaction time, working memory, and attention. Maya's reaction time improved from 372 to 296 milliseconds. These are wellness observations — not diagnostic tests.
 
 ### 1:58–2:30 — Return to Learn + Return to Play
 
@@ -102,7 +102,7 @@ Screen recording:
 
 Voiceover:
 
-> Sport and learning recover on separate timelines, so ReCo tracks both. The Return-to-Play path follows the Amsterdam 2022 international consensus statement — six stages from relative rest to full return to competition, with each stage requiring roughly 24 hours symptom-free before advancing. Stage 5, full-contact practice, explicitly requires clinician clearance. The Return-to-Learn path is just as important and often missing from concussion apps. It has four stages — daily activity at home, school activity at home, half-day attendance, and full-day attendance. ReCo generates symptom-matched temporary accommodations: if Maya has headaches, it suggests reduced screen time and extended exam time. If she has light sensitivity, it recommends adjusted seating and brightness. Parents and clinicians can print a one-page support summary to bring to school — no account, no portal, just a local printable document.
+> ReCo tracks both timelines. Return-to-Play follows the Amsterdam 2022 consensus — six stages, symptom-free before advancing. Return-to-Learn adds four stages with symptom-matched school accommodations and a printable support summary.
 
 ### 2:30–3:05 — Responsible Local AI
 
@@ -116,7 +116,7 @@ Screen recording:
 
 Voiceover:
 
-> The journal is where ReCo's responsible AI comes in. Recovery is emotionally exhausting — the frustration, the fear of falling behind, the isolation. ReCo gives you a private space to process it. The model runs locally through Ollama on your own machine — here it's qwen2.5:7b connected on localhost. Your words never leave your device. Before inference, deterministic rules intercept emergency and self-harm language and return crisis resources instead of sending that text to the model. Basic personal identifiers like emails and phone numbers are redacted before inference. After inference, ReCo checks the response for unsafe medical claims — like telling someone they're cleared to play. The system prompt grounds the model in Amsterdam 2022 consensus and CDC HEADS UP guidance, so it responds with empathy and recovery-aware suggestions. The safety audit log stores only outcomes and categories — never the journal text itself. This is what responsible AI looks like in health tech: safety before, during, and after inference, with no cloud copy of your most personal thoughts.
+> The journal runs through Ollama on your own machine — your words never leave the device. Before inference, emergency language is intercepted and personal identifiers are redacted. After inference, responses are checked for unsafe medical claims. The audit log stores outcomes, never journal text.
 
 ### 3:05–3:30 — Privacy + Report + Evidence
 
@@ -130,7 +130,7 @@ Screen recording:
 
 Voiceover:
 
-> The Privacy Center is the heart of our Responsible AI entry. A plain-language data inventory shows exactly what's stored: check-ins, journal entries, protocol logs, cognitive assessments, and anonymous safety logs. One click exports everything as JSON. One click wipes it all — no remnants, no server copies. The Recovery Report generates a clinician-friendly summary of symptom direction, protocol position, cognitive observations, and safety events — printable directly from the browser. And the Evidence Ledger maps every major feature to a primary public source: the Amsterdam 2022 consensus statement, CDC HEADS UP, Living Concussion Guidelines, and peer-reviewed return-to-learn research. It also states the app's limitations in plain language — ReCo does not diagnose, treat, or medically clear anyone.
+> One click exports everything. One click deletes it all. A printable recovery summary supports clinician conversations. The Evidence Ledger maps every feature to public sources — and states what ReCo cannot do.
 
 ### 3:30–3:42 — Architecture Proof
 
@@ -149,7 +149,7 @@ Render
 
 Voiceover:
 
-> Here's the architecture. Render serves the application files — HTML, JavaScript, CSS. That's it. The health record lives in IndexedDB inside the browser. Pattern analysis runs client-side. The AI safety pipeline runs client-side. And inference itself stays on localhost through Ollama. No health data ever reaches the Render server.
+> Render serves the app. The health record stays in your browser. Even AI inference stays on localhost.
 
 ### 3:42–3:50 — Flow Closing
 
